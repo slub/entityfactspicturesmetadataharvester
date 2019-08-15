@@ -21,6 +21,11 @@ optional arguments:
     ```
     example: entityfactspicturesmetadataharvester < [INPUT LINE-DELIMITED JSON FILE WITH ENTITYFACTS SHEETS] > [OUTPUT PICTURES METADATA LINE-DELIMITED JSON FILE]
     ```
+
+### Note
+
+The GND identifier from the EntityFacts sheet, where the picture (link) was found, is included into the metadata record (in the result). You can access/find it in the field 'gnd_id'.
+
 ## Run
 
 * clone this git repo or just download the [entityfactspicturesmetadataharvester.py](entityfactspicturesmetadataharvester/entityfactspicturesmetadataharvester.py) file
