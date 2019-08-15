@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import socket
 import sys
 import urllib.parse
 
@@ -15,6 +16,11 @@ import xmltodict
 from rx import operators as op
 from rx.scheduler import ThreadPoolScheduler
 
+USER_AGENT_HTTP_HEADER_KEY = 'user-agent'
+USER_AGENT_PATTERN = "entityfactspicturesmetadataharvester-bot-from-{0}/0.0.1 (https://github.com/slub/entityfactspicturesmetadataharvester; zazi@smiy.org) entityfactspicturesmetadataharvester/0.0.1"
+HOSTNAME = socket.getfqdn()
+USER_AGENT = USER_AGENT_PATTERN.format(HOSTNAME)
+HTTP_HEADERS = {USER_AGENT_HTTP_HEADER_KEY: USER_AGENT}
 WIKIMEDIA_COMMONS_FILE_METADATA_API_ENDPOINT = "https://opendata.utou.ch/glam/magnus-toolserver/commonsapi.php?meta&image="
 UTF8_CHARSET_ID = 'utf-8'
 UNICODE_CHARSET_ID = 'unicode'
@@ -99,7 +105,7 @@ def do_request(image_uri, gnd_identifier, content_type):
                                                                                               gnd_identifier,
                                                                                               image_uri,
                                                                                               current_thread().name))
-    response = requests.get(image_uri, timeout=60)
+    response = requests.get(image_uri, headers=HTTP_HEADERS, timeout=60)
     if response.status_code != 200:
         eprint("couldn't fetch {0} for GND identifier '{1}' from URL '{2}' got a '{3}' (thread = '{4}')".format(
             content_type, gnd_identifier, image_uri, response.status_code, current_thread().name))
